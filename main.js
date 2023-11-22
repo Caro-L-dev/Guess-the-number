@@ -7,6 +7,8 @@ const displayContent = () => {
   mainContent.style.display = "block";
 };
 
+const MAX_VALUE = 500;
+
 const playBtn = () => {
   const playBtn = document.getElementById("playBtn");
   playBtn.addEventListener("click", () => {
@@ -33,8 +35,6 @@ const displayMessage = (message) => {
 
 const middleMarker = () => {
   const middleMarker = document.getElementById("middleMarker");
-
-  const MAX_VALUE = 500;
   const middlePosition = MAX_VALUE / 2;
 
   middleMarker.innerHTML = "X";
@@ -57,6 +57,7 @@ const game = () => {
   const messageElement = document.getElementById("message");
   const scoreElement = document.getElementById("score");
   const attemptElement = document.getElementById("attempt");
+  const progressBar = document.getElementById("progressBar");
 
   submitBtn.addEventListener("click", () => {
     const userGuess = parseInt(fetchUserGuess(), 10);
@@ -87,8 +88,9 @@ const game = () => {
     inputElement.value = "";
     messageElement.innerHTML = "";
     attemptElement.innerHTML = "Essai : 0";
+    progressBar.innerHTML = "";
   });
 };
 
-// playBtn();
-game();
+playBtn();
+//game();
