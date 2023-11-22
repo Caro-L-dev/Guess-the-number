@@ -9,7 +9,9 @@ const displayContent = () => {
 
 const playBtn = () => {
   const playBtn = document.getElementById("playBtn");
-  playBtn.addEventListener("click", game);
+  playBtn.addEventListener("click", () => {
+    game();
+  });
 };
 
 const generateRandomNumberBetween0And500 = () => {
@@ -32,6 +34,7 @@ const displayMessage = (message) => {
 const game = () => {
   displayContent();
   let targetNumber = generateRandomNumberBetween0And500();
+  let attempts = 0;
   let score = 0;
   playBtn();
 
@@ -40,13 +43,18 @@ const game = () => {
   const inputElement = document.getElementById("yourGuess");
   const messageElement = document.getElementById("message");
   const scoreElement = document.getElementById("score");
+  const attemptElement = document.getElementById("attempt");
 
   submitBtn.addEventListener("click", () => {
     const userGuess = parseInt(fetchUserGuess(), 10);
 
     if (isNaN(userGuess)) {
       displayMessage("💥 Hep hep, entrez votre numéro.");
+    } else {
+      attempts++;
+      attemptElement.innerHTML = `Essais : ${attempts}`;
     }
+
     if (userGuess > targetNumber) {
       displayMessage("🔴 Nombre trop grand.");
     } else if (userGuess < targetNumber) {
@@ -65,7 +73,9 @@ const game = () => {
     replayBtn.style.display = "none";
     inputElement.value = "";
     messageElement.innerHTML = "";
+    attemptElement.innerHTML = "Essai : 0";
   });
 };
 
-game();
+// game();
+playBtn();
