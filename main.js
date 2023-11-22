@@ -21,20 +21,12 @@ const generateRandomNumberBetween0And500 = () => {
 
 const fetchUserGuess = () => {
   const inputElement = document.getElementById("yourGuess");
-
-  // const submitBtn = document.getElementById("submitBtn");
-  // submitBtn.addEventListener("click", () => {
-  //   const userGuess = fetchUserGuess();
-  //   console.log("User Guess:", userGuess);
-  // });
-
   return inputElement.value;
 };
 
 const displayMessage = (message) => {
-  const messageElement = document.createElement("p");
+  const messageElement = document.getElementById("message");
   messageElement.innerHTML = message;
-  document.body.appendChild(messageElement);
 };
 
 const game = () => {
@@ -46,12 +38,16 @@ const game = () => {
   submitBtn.addEventListener("click", () => {
     const userGuess = parseInt(fetchUserGuess(), 10);
 
+    if (isNaN(userGuess)) {
+      displayMessage("💥 Hep hep, entrez votre numéro.");
+    }
+
     if (userGuess > targetNumber) {
-      displayMessage("Nombre trop grand");
+      displayMessage("🔴 Nombre trop grand.");
     } else if (userGuess < targetNumber) {
-      displayMessage("Nombre trop petit");
-    } else {
-      displayMessage("Bravo ! Vous avez deviné le bon nombre !");
+      displayMessage("🔴 Nombre trop petit.");
+    } else if (userGuess === targetNumber) {
+      displayMessage("✅ Bravo ! Vous avez deviné le bon nombre !");
     }
   });
 };

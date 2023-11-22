@@ -12,27 +12,33 @@
     <div class="flex flex-col items-center my-10">
       <div id="startContent">
         <p class="max-w-sm mb-4">
-          The application will generate a random number, and your task is to
-          find it in as few attempts as possible.
+          L’application va générer un nombre aléatoire, et votre tâche est de
+          le trouver en aussi peu de tentatives que possible.
         </p>
-        <button id="playBtn" class="flex mx-auto">Start</button>
+        <button id="playBtn" class="flex mx-auto">Jouer</button>
       </div>
       <div id="mainContent" class="hidden">
-        <p>I generated a number between 0 and 500, try to find it!</p>
+        <p>
+          L'application génère un numéro entre 0 et 500, essaie de le trouver !
+        </p>
         <p class="text-right">Score : ?</p>
-        <div class="flex justify-between">
-          <div class="w-full mr-1">
-            <label for="yourGuess">Your guess:</label>
+          <label for="yourGuess">Votre numéro :</label>
+          <div class="flex">
             <input
               type="number"
               id="yourGuess"
               name="yourGuess"
               placeholder="55"
+              class="w-full p-2 border border-gray-300 rounded-l mr-1"
             />
+            <button id="submitBtn" type="submit" class="bg-slate-900 text-white p-2 rounded-r">
+              Envoyer
+            </button>
           </div>
-
-          <button id="submitBtn">Submit</button>
+          <p id="message" class="mt-2"></p>
         </div>
+        
+
       </div>
     </div>
     <script type="module" src="/main.js"></script>
