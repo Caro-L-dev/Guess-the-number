@@ -32,12 +32,14 @@ const displayMessage = (message) => {
 const game = () => {
   displayContent();
   let targetNumber = generateRandomNumberBetween0And500();
+  let score = 0;
   playBtn();
 
   const submitBtn = document.getElementById("submitBtn");
   const replayBtn = document.getElementById("replayBtn");
   const inputElement = document.getElementById("yourGuess");
   const messageElement = document.getElementById("message");
+  const scoreElement = document.getElementById("score");
 
   submitBtn.addEventListener("click", () => {
     const userGuess = parseInt(fetchUserGuess(), 10);
@@ -53,6 +55,8 @@ const game = () => {
       displayMessage("✅ Bravo ! Vous avez deviné le bon nombre !");
       replayBtn.style.display = "block";
       inputElement.value = "";
+      score++;
+      scoreElement.innerHTML = `Score: ${score}`;
     }
   });
 
