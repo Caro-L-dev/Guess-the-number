@@ -22,20 +22,38 @@ const generateRandomNumberBetween0And500 = () => {
 const fetchUserGuess = () => {
   const inputElement = document.getElementById("yourGuess");
 
-  const submitBtn = document.getElementById("submitBtn");
-  submitBtn.addEventListener("click", () => {
-    const userGuess = fetchUserGuess();
-    console.log("User Guess:", userGuess);
-  });
+  // const submitBtn = document.getElementById("submitBtn");
+  // submitBtn.addEventListener("click", () => {
+  //   const userGuess = fetchUserGuess();
+  //   console.log("User Guess:", userGuess);
+  // });
 
   return inputElement.value;
 };
 
+const displayMessage = (message) => {
+  const messageElement = document.createElement("p");
+  messageElement.innerHTML = message;
+  document.body.appendChild(messageElement);
+};
+
 const game = () => {
-  playBtn();
   displayContent();
-  generateRandomNumberBetween0And500();
-  fetchUserGuess();
+  const targetNumber = generateRandomNumberBetween0And500();
+  playBtn();
+
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.addEventListener("click", () => {
+    const userGuess = parseInt(fetchUserGuess(), 10);
+
+    if (userGuess > targetNumber) {
+      displayMessage("Nombre trop grand");
+    } else if (userGuess < targetNumber) {
+      displayMessage("Nombre trop petit");
+    } else {
+      displayMessage("Bravo ! Vous avez deviné le bon nombre !");
+    }
+  });
 };
 
 game();
