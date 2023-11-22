@@ -31,12 +31,25 @@ const displayMessage = (message) => {
   messageElement.innerHTML = message;
 };
 
+const middleMarker = () => {
+  const middleMarker = document.getElementById("middleMarker");
+
+  const MAX_VALUE = 500;
+  const middlePosition = MAX_VALUE / 2;
+
+  middleMarker.innerHTML = "X";
+  middleMarker.style.width = "20px";
+  middleMarker.style.textAlign = "center";
+  middleMarker.style.left = `${middlePosition}px`;
+};
+
 const game = () => {
   displayContent();
   let targetNumber = generateRandomNumberBetween0And500();
   let attempts = 0;
   let score = 0;
   playBtn();
+  middleMarker();
 
   const submitBtn = document.getElementById("submitBtn");
   const replayBtn = document.getElementById("replayBtn");
@@ -77,5 +90,5 @@ const game = () => {
   });
 };
 
-// game();
-playBtn();
+// playBtn();
+game();

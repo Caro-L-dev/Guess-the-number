@@ -36,7 +36,15 @@
               Envoyer
             </button>
           </div>
-          <p id="message" class="mt-2"></p>
+          <p id="message" class="my-2"></p>
+          <div id="progressBar" class="w-full h-10 border border-gray-500 border-solid rounded-md flex items-center">
+            <p id="progressBarEmoji"></p>
+            <p class="mx-auto" id="middleMarker"></p>
+          </div>
+          <div class="flex justify-between">
+            <p>0</p>
+            <p>500</p>
+          </div>
         </div>
         <button id="replayBtn" class="hidden mt-4">Génèrer un nombre aléatoire</button>
       </div>
