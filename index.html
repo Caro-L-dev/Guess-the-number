@@ -10,32 +10,32 @@
   <body class="flex flex-col justify-center h-screen mt-5">
     <h1 class="uppercase font-bold text-5xl text-center" style="font-family: Raleway;">Guess the number</h1>
     <div class="flex flex-col items-center my-10">
-      <div id="startContent">
+      <div id="start-content">
         <p class="max-w-sm mb-4">
           L’application va générer un nombre aléatoire, et votre tâche est de
           le trouver en aussi peu de tentatives que possible.
         </p>
-        <button id="playBtn" class="flex mx-auto">Jouer</button>
+        <button id="startBtn" class="flex mx-auto">Jouer</button>
       </div>
-      <div id="mainContent" class="hidden">
+      <div id="game-content" class="hidden">
         <p>
           L'application génère un numéro entre 0 et 500, essaie de le trouver !
         </p>
         <p class="text-right" id="score"></p>
-        <p class="text-right" id="attempt"></p>
-          <label for="yourGuess">Votre numéro :</label>
-          <div class="flex">
+        <p class="text-right" id="attempts"></p>
+          <label for="guess">Votre numéro :</label>
+          <form id="guess-form" class="flex">
             <input
               type="number"
-              id="yourGuess"
-              name="yourGuess"
+              id="guess"
+              name="guess"
               placeholder="55"
               class="w-full p-2 border border-gray-300 rounded-l mr-1"
             />
             <button id="submitBtn" type="submit" class="bg-slate-900 text-white p-2 rounded-r">
               Envoyer
             </button>
-          </div>
+          </form>
           <p id="message" class="my-2"></p>
           <div id="progressBar" class="w-full h-10 border border-gray-500 border-solid rounded-md flex items-center">
             <p id="progressBarEmoji"></p>
@@ -49,6 +49,6 @@
         <button id="replayBtn" class="hidden mt-4">Génèrer un nombre aléatoire</button>
       </div>
     </div>
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="/index.js"></script>
   </body>
 </html>
