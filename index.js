@@ -1,7 +1,5 @@
-// @ts-nocheck
-
 const getRandomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 const MAX = 500;
@@ -12,7 +10,11 @@ class Attempts {
   }
 
   init() {
-    this.element = document.getElementById("attempts");
+    this.element = document.querySelector("#attempts");
+
+    while (this.element.firstChild) {
+      this.element.firstChild.remove();
+    }
   }
 
   addAttempt(attempt, isRight) {
@@ -22,11 +24,11 @@ class Attempts {
     element.classList.add("text-xs");
     element.style.position = "absolute";
 
-    element.innerText = isRight ? "V" : "X";
+    element.innerText = isRight ? "🟢" : "x";
 
     const percentage = Math.min(Math.max(0, (attempt / MAX) * 100), 98);
     element.style.left = `${percentage}%`;
-    element.style.top = 9;
+    element.style.top = "9px";
 
     this.element.appendChild(element);
   }
@@ -35,7 +37,8 @@ class Attempts {
 class Game {
   constructor() {
     this.targetNumber = getRandomNumber(0, MAX);
-    this.attempt = 0;
+    console.log("Random Number:", this.targetNumber);
+    this._attempt = 0;
     this.attempts = new Attempts();
 
     this.submitHandler = (event) => {
@@ -43,15 +46,27 @@ class Game {
     };
   }
 
+  get attempt() {
+    return this._attempt;
+  }
+
+  set attempt(newAttempt) {
+    this._attempt = newAttempt;
+    this.attemptElement.innerText = `Nombre d'essai(s) : ${newAttempt}`;
+  }
+
   init() {
     this.attempts.init();
-    this.element = document.getElementById("game-content");
+    this.element = document.getElementById("game-container");
     this.element.classList.remove("hidden");
 
     this.guessForm = document.getElementById("guess-form");
     this.message = document.getElementById("message");
 
+    this.attemptElement = document.getElementById("attempt");
+
     this.guessForm.addEventListener("submit", this.submitHandler);
+    this.restartButton = document.getElementById("restart");
   }
 
   submitGuess(event) {
@@ -64,7 +79,7 @@ class Game {
 
     if (Number.isNaN(guess)) {
       this.message.innerText =
-        "Valeur incorrecte, vous devez utiliser un nombre valide";
+        "❌ Format incorrect, vous devez entrer un numéro valide";
       return;
     }
 
@@ -74,38 +89,51 @@ class Game {
     this.attempts.addAttempt(guess, guess === this.targetNumber);
 
     if (guess === this.targetNumber) {
-      this.message.innerText = `Super, vous avez trouver le nombre mystère ! C'était ${this.targetNumber}.`;
+      this.message.innerText = `🟢 Super vous avez trouvé ! Le numéro mystère était ${this.targetNumber}.`;
+      this.restartButton.classList.remove("hidden");
       return;
     }
 
     if (guess > this.targetNumber) {
-      const isAlreadyHight = this.message.innerText.includes("grand");
-      const getLastCharacter = Number(this.message.innerText.slice(-1)) || 0;
-      this.message.innerText = `Votre numéro est trop grand.
-      ${isAlreadyHight ? `x${getLastCharacter + 1}` : ""}`;
+      const isAlredyHigh = this.message.innerText.includes("grand");
+      const getLastChar = Number(this.message.innerText.slice(-1)) || 1;
+      this.message.innerText = `🔴 Votre numéro est trop grand. ${
+        isAlredyHigh ? `x${getLastChar + 1}` : ""
+      }`;
     }
 
     if (guess < this.targetNumber) {
-      const isAlreadyLow = this.message.innerText.includes("petit");
-      const getLastCharacter = Number(this.message.innerText.slice(-1)) || 0;
-      this.message.innerText = `Votre numéro est trop petit.
-      ${isAlreadyLow ? `x${getLastCharacter + 1}` : ""}`;
+      const isAlredyLow = this.message.innerText.includes("bas");
+      const getLastChar = Number(this.message.innerText.slice(-1)) || 1;
+      this.message.innerText = `🔴 Votre numéro est trop bas. ${
+        isAlredyLow ? `x${getLastChar + 1}` : ""
+      }`;
     }
+  }
+
+  destroy() {
+    this.element.classList.add("hidden");
+    this.guessForm.removeEventListener("form", this.submitHandler);
+    this.message.innerText = "";
+    this.attemptElement.innerText = "Nombre d'essai(s) : 0";
+    this.restartButton.classList.add("hidden");
   }
 }
 
 let game = null;
-const startGame = () => {
-  const startContent = document.getElementById("start-content");
-  startContent.classList.add("hidden");
+const toggleGame = () => {
+  const startContainer = document.getElementById("start-container");
+  startContainer.classList.add("hidden");
 
   if (game) {
-    //
+    game.destroy();
   }
-
   game = new Game();
   game.init();
 };
 
-const startBtn = document.getElementById("startBtn");
-startBtn.addEventListener("click", startGame);
+const startButton = document.getElementById("start");
+startButton.addEventListener("click", toggleGame);
+
+const restartButton = document.getElementById("restart");
+restartButton.addEventListener("click", toggleGame);

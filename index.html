@@ -7,46 +7,54 @@
     <link rel="stylesheet" href="style.css" />
     <title>Guess the Number</title>
   </head>
-  <body class="flex flex-col justify-center h-screen mt-5">
-    <h1 class="uppercase font-bold text-5xl text-center" style="font-family: Raleway;">Guess the number</h1>
-    <div class="flex flex-col items-center my-10">
-      <div id="start-content">
-        <p class="max-w-sm mb-4">
-          L’application va générer un nombre aléatoire, et votre tâche est de
-          le trouver en aussi peu de tentatives que possible.
-        </p>
-        <button id="startBtn" class="flex mx-auto">Jouer</button>
-      </div>
-      <div id="game-content" class="hidden">
-        <p>
-          L'application génère un numéro entre 0 et 500, essaie de le trouver !
-        </p>
-        <p class="text-right" id="score"></p>
-        <p class="text-right" id="attempts"></p>
-          <label for="guess">Votre numéro :</label>
-          <form id="guess-form" class="flex">
-            <input
-              type="number"
-              id="guess"
-              name="guess"
-              placeholder="55"
-              class="w-full p-2 border border-gray-300 rounded-l mr-1"
-            />
-            <button id="submitBtn" type="submit" class="bg-slate-900 text-white p-2 rounded-r">
-              Envoyer
-            </button>
-          </form>
-          <p id="message" class="my-2"></p>
-          <div id="progressBar" class="w-full h-10 border border-gray-500 border-solid rounded-md flex items-center">
-            <p id="progressBarEmoji"></p>
-            <p class="mx-auto" id="middleMarker"></p>
-          </div>
-          <div class="flex justify-between">
-            <p>0</p>
-            <p>500</p>
-          </div>
+  <body class="h-full">
+    <div class="container m-auto mt-4 h-full flex flex-col">
+      <h1
+        class="text-center font-extrabold text-6xl"
+        style="font-family: Raleway"
+      >
+        GUESS THE NUMBER
+      </h1>
+      <div class="h-full flex items-center justify-center">
+        <div
+          id="start-container"
+          class="flex flex-col gap-4 items-start max-w-md"
+        >
+          <p>
+            L’application va générer un nombre aléatoire, et votre tâche est de
+            le trouver en aussi peu de tentatives que possible.
+          </p>
+          <button id="start">Jouer</button>
         </div>
-        <button id="replayBtn" class="hidden mt-4">Génèrer un nombre aléatoire</button>
+        <div id="game-container" class="flex flex-col gap-4 max-w-md hidden">
+          <p>
+            L'application génère un numéro entre 0 et 500, à vous de le trouver
+            !
+          </p>
+          <p class="text-end" id="attempt">Nombre d'essai(s) : 0</p>
+          <div class="flex flex-col gap-0.5">
+            <label for="guess">Votre numéro :</label>
+            <form id="guess-form" class="flex items-center gap-1">
+              <input name="guess" />
+              <button>Envoyer</button>
+            </form>
+            <p class="text-xs text-neutral-500">Entrez votre numéro.</p>
+          </div>
+          <p id="message"></p>
+          <div class="flex flex-col gap-0.5">
+            <div
+              id="attempts"
+              class="w-full h-10 border border-neutral-400 rounded-md relative"
+            ></div>
+            <div class="flex justify-between">
+              <p class="text-xs">0</p>
+              <p class="text-xs">500</p>
+            </div>
+          </div>
+          <button id="restart" class="hidden">
+            Regénèrer un nombre aléatoire
+          </button>
+        </div>
       </div>
     </div>
     <script type="module" src="/index.js"></script>
