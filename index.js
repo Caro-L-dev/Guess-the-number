@@ -1,17 +1,15 @@
-const getRandomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+const getRandomNumber = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
 
 const MAX = 500;
 
 class Attempts {
   constructor() {
     this.attempts = [];
+    this.element = document.querySelector("#attempts");
   }
 
   init() {
-    this.element = document.querySelector("#attempts");
-
     while (this.element.firstChild) {
       this.element.firstChild.remove();
     }
@@ -23,8 +21,7 @@ class Attempts {
     const element = document.createElement("div");
     element.classList.add("text-xs");
     element.style.position = "absolute";
-
-    element.innerText = isRight ? "🟢" : "x";
+    element.innerText = isRight ? "🟢" : "❌";
 
     const percentage = Math.min(Math.max(0, (attempt / MAX) * 100), 98);
     element.style.left = `${percentage}%`;
@@ -40,10 +37,7 @@ class Game {
     console.log("Random Number:", this.targetNumber);
     this._attempt = 0;
     this.attempts = new Attempts();
-
-    this.submitHandler = (event) => {
-      this.submitGuess(event);
-    };
+    this.submitHandler = (event) => this.submitGuess(event);
   }
 
   get attempt() {
@@ -56,26 +50,22 @@ class Game {
   }
 
   init() {
-    this.attempts.init();
     this.element = document.getElementById("game-container");
     this.element.classList.remove("hidden");
 
     this.guessForm = document.getElementById("guess-form");
     this.message = document.getElementById("message");
-
     this.attemptElement = document.getElementById("attempt");
 
     this.guessForm.addEventListener("submit", this.submitHandler);
     this.restartButton = document.getElementById("restart");
+    this.restartButton.addEventListener("click", () => this.restartGame());
   }
 
   submitGuess(event) {
     event.preventDefault();
-
     const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    const guess = Number(formData.get("guess"));
+    const guess = Number(form.querySelector("input").value);
 
     if (Number.isNaN(guess)) {
       this.message.innerText =
@@ -89,31 +79,36 @@ class Game {
     this.attempts.addAttempt(guess, guess === this.targetNumber);
 
     if (guess === this.targetNumber) {
-      this.message.innerText = `🟢 Super vous avez trouvé ! Le numéro mystère était ${this.targetNumber}.`;
-      this.restartButton.classList.remove("hidden");
-      return;
+      this.handleWin();
+    } else {
+      this.handleGuessMismatch(guess);
     }
+  }
 
-    if (guess > this.targetNumber) {
-      const isAlredyHigh = this.message.innerText.includes("grand");
-      const getLastChar = Number(this.message.innerText.slice(-1)) || 1;
-      this.message.innerText = `🔴 Votre numéro est trop grand. ${
-        isAlredyHigh ? `x${getLastChar + 1}` : ""
-      }`;
-    }
+  handleWin() {
+    this.message.innerText = `🟢 Super vous avez trouvé ! Le numéro mystère était ${this.targetNumber}.`;
+    this.restartButton.classList.remove("hidden");
+  }
 
-    if (guess < this.targetNumber) {
-      const isAlredyLow = this.message.innerText.includes("bas");
-      const getLastChar = Number(this.message.innerText.slice(-1)) || 1;
-      this.message.innerText = `🔴 Votre numéro est trop bas. ${
-        isAlredyLow ? `x${getLastChar + 1}` : ""
-      }`;
-    }
+  handleGuessMismatch(guess) {
+    const comparisonMessage =
+      guess > this.targetNumber ? "trop grand" : "trop bas";
+    const isAlready = this.message.innerText.includes(comparisonMessage);
+    const getLastChar = Number(this.message.innerText.slice(-1)) || 1;
+
+    this.message.innerText = `🔴 Votre numéro est ${comparisonMessage}. ${
+      isAlready ? `x${getLastChar + 1}` : ""
+    }`;
+  }
+
+  restartGame() {
+    this.destroy();
+    this.init();
   }
 
   destroy() {
     this.element.classList.add("hidden");
-    this.guessForm.removeEventListener("form", this.submitHandler);
+    this.guessForm.removeEventListener("submit", this.submitHandler);
     this.message.innerText = "";
     this.attemptElement.innerText = "Nombre d'essai(s) : 0";
     this.restartButton.classList.add("hidden");
@@ -121,6 +116,7 @@ class Game {
 }
 
 let game = null;
+
 const toggleGame = () => {
   const startContainer = document.getElementById("start-container");
   startContainer.classList.add("hidden");
@@ -128,6 +124,7 @@ const toggleGame = () => {
   if (game) {
     game.destroy();
   }
+
   game = new Game();
   game.init();
 };
